@@ -1,0 +1,12 @@
+<view class="page-exchange">
+  <view class="coming-soon">
+    <view class="coming-anim">🎁</view>
+    <view class="coming-title">兑换商城</view>
+    <view class="coming-subtitle">正在建设中，敬请期待</view>
+    <view class="coming-desc">更多精彩兑换好礼即将上线</view>
+    <button class="btn-notify" bindtap="onNotify">
+      🔔 通知我
+    </button>
+    <view class="notify-hint" wx:if="{{notified}}">✅ 已订阅，上线后将第一时间通知您</view>
+  </view>
+</view>

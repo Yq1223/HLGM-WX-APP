@@ -1,0 +1,97 @@
+<view class="page-publish">
+  <!-- 批量导入入口 -->
+  <view class="import-banner" bindtap="onBatchImport">
+    <view class="import-left">
+      <text class="import-icon">📥</text>
+      <view class="import-text">
+        <text class="import-title">Excel批量导入</text>
+        <text class="import-desc">上传Excel文件，一次导入多条信息</text>
+      </view>
+    </view>
+    <text class="import-arrow">></text>
+  </view>
+
+  <!-- 导入结果弹窗 -->
+  <view class="import-mask" wx:if="{{showImportResult}}" bindtap="closeImportResult">
+    <view class="import-result-card" catchtap="">
+      <view class="result-header">导入结果</view>
+      <view class="result-body">
+        <view class="result-row success">
+          <text class="result-icon">✅</text>
+          <text>成功导入 <text class="result-num">{{importResult.successCount}}</text> 条</text>
+        </view>
+        <view class="result-row fail" wx:if="{{importResult.failCount > 0}}">
+          <text class="result-icon">❌</text>
+          <text>失败 <text class="result-num">{{importResult.failCount}}</text> 条</text>
+        </view>
+        <view class="result-detail" wx:if="{{importResult.failDetails.length > 0}}">
+          <view class="detail-item" wx:for="{{importResult.failDetails}}" wx:key="*this">
+            {{item}}
+          </view>
+        </view>
+      </view>
+      <button class="result-btn" bindtap="closeImportResult">我知道了</button>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <!-- 标题 -->
+    <view class="form-item">
+      <view class="form-label">标题 <text class="required">*</text></view>
+      <input class="form-input"
+             placeholder="请输入标题，最多128字"
+             maxlength="128"
+             value="{{form.title}}"
+             bindinput="onInput" data-field="title" />
+      <view class="char-count">{{form.title.length}}/128</view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="form-item">
+      <view class="form-label">分类</view>
+      <view class="category-wrap">
+        <view class="category-item {{form.category === item ? 'active' : ''}}"
+              wx:for="{{categories}}" wx:key="*this"
+              bindtap="onCategory" data-val="{{item}}">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 内容 -->
+    <view class="form-item">
+      <view class="form-label">内容 <text class="required">*</text></view>
+      <textarea class="form-textarea"
+                placeholder="请详细描述薅羊毛活动信息..."
+                maxlength="5000"
+                value="{{form.content}}"
+                bindinput="onInput" data-field="content" />
+    </view>
+
+    <!-- 领取步骤 -->
+    <view class="form-item">
+      <view class="form-label">领取步骤</view>
+      <textarea class="form-textarea"
+                placeholder="填写领取/参与步骤，每行一步"
+                maxlength="1000"
+                value="{{form.claimSteps}}"
+                bindinput="onInput" data-field="claimSteps" />
+    </view>
+
+    <!-- 来源链接 -->
+    <view class="form-item">
+      <view class="form-label">来源链接</view>
+      <input class="form-input"
+             placeholder="填写活动来源URL（选填）"
+             value="{{form.sourceUrl}}"
+             bindinput="onInput" data-field="sourceUrl" />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-wrap safe-bottom">
+    <button class="btn-primary submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : (isEdit ? '重新提交审核' : '发布信息')}}
+    </button>
+  </view>
+</view>

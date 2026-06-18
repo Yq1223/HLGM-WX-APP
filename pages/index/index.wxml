@@ -1,0 +1,72 @@
+<view class="page-index">
+  <!-- 品牌头部 -->
+  <view class="search-bar">
+    <view class="brand-top">
+      <view class="brand-info">
+        <image class="brand-logo" src="/images/logo-200.png" mode="aspectFill" />
+        <view class="brand-text">
+          <text class="brand-name">薅了个毛</text>
+          <text class="brand-slogan">本来不想薅的，但它实在太便宜了</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 搜索栏 -->
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input class="search-input"
+             placeholder="搜索羊毛信息..."
+             placeholder-class="search-placeholder"
+             value="{{keyword}}"
+             confirm-type="search"
+             bindinput="onSearchInput"
+             bindconfirm="onSearch" />
+      <text class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">✕</text>
+    </view>
+  </view>
+
+  <!-- 广告位：首页顶部横幅（预留） -->
+  <ad-banner position="index_top" />
+
+  <!-- 羊毛列表 -->
+  <view class="wool-list" wx:if="{{list.length > 0}}">
+    <view class="wool-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="card-body">
+        <view class="card-content">
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-summary">{{item.content}}</view>
+          <view class="card-meta">
+            <view class="meta-left">
+              <text class="meta-author">{{item.authorName || '匿名'}}</text>
+              <text class="meta-dot">·</text>
+              <text class="meta-time">{{item.createdAt}}</text>
+            </view>
+            <view class="meta-right">
+              <text class="meta-views">👁 {{item.viewCount || 0}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 广告位：列表间插屏（预留，第5条后） -->
+    <ad-banner wx:if="{{list.length >= 5}}" position="index_between" />
+  </view>
+
+  <!-- 空状态 -->
+  <empty wx:if="{{!loading && list.length === 0}}"
+         emoji="🐑"
+         title="还没有羊毛信息"
+         desc="快来发布第一条薅羊毛信息吧！"
+         btnText="去发布"
+         bind:btntap="goPublish" />
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="no-more" wx:if="{{noMore && list.length > 0}}">— 没有更多了 —</view>
+</view>

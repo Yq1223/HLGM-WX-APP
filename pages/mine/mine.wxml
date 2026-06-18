@@ -1,0 +1,154 @@
+<view class="page-mine">
+  <!-- 用户信息区 -->
+  <view class="user-header">
+    <view class="user-info" wx:if="{{userInfo}}">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/logo-200.png'}}" mode="aspectFill" bindtap="onChangeAvatar" />
+      <view class="user-detail">
+        <view class="nickname">{{userInfo.nickname || '微信用户'}}</view>
+        <view class="user-tag admin" wx:if="{{isAdmin}}">👑 管理员</view>
+        <view class="user-tag normal" wx:else>普通用户</view>
+      </view>
+    </view>
+    <view class="user-info" wx:else>
+      <view class="avatar avatar-default" bindtap="onLogin">
+        <image class="avatar-img" src="/images/logo-200.png" mode="aspectFill" />
+      </view>
+      <view class="user-detail" bindtap="onLogin">
+        <view class="nickname">点击登录</view>
+        <view class="login-hint">登录后查看更多功能</view>
+      </view>
+    </view>
+
+    <!-- 积分卡片 -->
+    <view class="points-card" wx:if="{{userInfo}}" bindtap="goPoints">
+      <view class="points-left">
+        <text class="points-label">我的积分</text>
+        <text class="points-num">{{userInfo.points || 0}}</text>
+      </view>
+      <view class="points-right">
+        <text class="points-link">积分明细 ></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 管理员专属入口 -->
+  <view class="admin-section" wx:if="{{isAdmin}}">
+    <view class="admin-header">
+      <text class="admin-title">👑 管理员工具</text>
+    </view>
+    <view class="admin-grid">
+      <view class="admin-grid-item" bindtap="goAdmin" data-filter="0">
+        <text class="grid-icon">📋</text>
+        <text class="grid-text">待审核</text>
+        <text class="grid-desc">审核新发布</text>
+      </view>
+      <view class="admin-grid-item" bindtap="goAdmin" data-filter="1">
+        <text class="grid-icon">✅</text>
+        <text class="grid-text">已上线</text>
+        <text class="grid-desc">管理上线内容</text>
+      </view>
+      <view class="admin-grid-item" bindtap="goAdmin" data-filter="">
+        <text class="grid-icon">📊</text>
+        <text class="grid-text">全部信息</text>
+        <text class="grid-desc">查看所有状态</text>
+      </view>
+      <view class="admin-grid-item" bindtap="goAdmin" data-filter="2">
+        <text class="grid-icon">❌</text>
+        <text class="grid-text">已驳回</text>
+        <text class="grid-desc">驳回记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 广告位：个人中心横幅（预留） -->
+  <ad-banner position="mine_banner" />
+
+  <!-- 功能入口 -->
+  <view class="func-card" wx:if="{{userInfo}}">
+    <view class="func-item" bindtap="goExchange">
+      <text class="func-icon">🎁</text>
+      <text class="func-text">积分兑换</text>
+      <text class="func-arrow">></text>
+    </view>
+    <view class="func-item" bindtap="goExchangeRecord">
+      <text class="func-icon">📋</text>
+      <text class="func-text">兑换记录</text>
+      <text class="func-arrow">></text>
+    </view>
+    <view class="func-item" wx:if="{{!isAdmin}}" bindtap="goAdmin">
+      <text class="func-icon">⚙️</text>
+      <text class="func-text">审核管理</text>
+      <text class="func-desc">仅管理员可用</text>
+      <text class="func-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 我的发布 - Tab栏 -->
+  <view class="section-header" wx:if="{{userInfo}}">
+    <text class="section-title">我的发布</text>
+  </view>
+
+  <view class="tab-bar" wx:if="{{userInfo}}">
+    <view class="tab-item {{currentTab === -1 ? 'active' : ''}}" bindtap="switchTab" data-tab="-1">全部</view>
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">待审核</view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">已上线</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">已驳回</view>
+    <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-tab="3">已下线</view>
+  </view>
+
+  <!-- 列表 -->
+  <view class="my-list" wx:if="{{userInfo}}">
+    <view class="my-card" wx:for="{{myList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="my-card-top">
+        <view class="my-card-title">{{item.title}}</view>
+        <view class="tag tag-{{item.status === 0 ? 'pending' : item.status === 1 ? 'online' : item.status === 2 ? 'rejected' : 'offline'}}">
+          {{item.statusDesc}}
+        </view>
+      </view>
+      <view class="my-card-meta">
+        <text>{{item.createdAt}}</text>
+        <text>👁 {{item.viewCount || 0}}</text>
+      </view>
+    </view>
+
+    <empty wx:if="{{!loading && myList.length === 0}}"
+           emoji="📝"
+           title="还没有发布过信息"
+           desc="去首页看看有什么好羊毛吧~" />
+
+    <view class="loading-wrap" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{noMore && myList.length > 0}}">— 没有更多了 —</view>
+  </view>
+
+  <!-- 微信头像昵称选择弹窗（登录时用） -->
+  <view class="login-mask" wx:if="{{showLoginDialog}}" bindtap="closeLoginDialog">
+    <view class="login-card" catchtap="">
+      <view class="login-title">完善个人信息</view>
+      <view class="login-desc">获取您的微信头像和昵称</view>
+
+      <!-- 头像选择 -->
+      <view class="login-avatar-wrap">
+        <button class="login-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image class="login-avatar-img" src="{{tempAvatarUrl || '/images/logo-200.png'}}" mode="aspectFill" />
+          <text class="login-avatar-hint">点击选择头像</text>
+        </button>
+      </view>
+
+      <!-- 昵称输入 -->
+      <view class="login-nickname-wrap">
+        <input class="login-nickname-input"
+               type="nickname"
+               placeholder="请输入昵称"
+               value="{{tempNickname}}"
+               bindinput="onNicknameInput"
+               bindblur="onNicknameBlur" />
+      </view>
+
+      <button class="login-confirm-btn" bindtap="confirmLogin">确认登录</button>
+    </view>
+  </view>
+</view>

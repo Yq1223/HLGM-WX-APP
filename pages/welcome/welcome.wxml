@@ -1,0 +1,38 @@
+<view class="splash-page">
+  <!-- 背景装饰 -->
+  <view class="bg-circle bg-circle-1"></view>
+  <view class="bg-circle bg-circle-2"></view>
+  <view class="bg-circle bg-circle-3"></view>
+
+  <!-- 主内容 -->
+  <view class="splash-content">
+    <!-- Logo -->
+    <view class="logo-wrap animate-fade-in">
+      <image class="logo-img" src="/images/splash-logo.png" mode="aspectFit" />
+    </view>
+
+    <!-- 应用名 -->
+    <view class="app-name animate-fade-in-delay1">
+      <text class="name-cn">薅了个毛</text>
+      <text class="name-en">Haloy Wool</text>
+    </view>
+
+    <!-- Slogan -->
+    <view class="slogan animate-fade-in-delay2">
+      <text class="slogan-text">"本来不想薅的，但它实在太便宜了"</text>
+    </view>
+
+    <!-- 进入按钮 -->
+    <view class="enter-wrap animate-fade-in-delay3">
+      <button class="enter-btn" bindtap="enterApp">
+        <text>开始薅羊毛</text>
+        <text class="enter-arrow"> →</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部版本 -->
+  <view class="splash-footer">
+    <text class="footer-text">Haloy Wool v1.0.0</text>
+  </view>
+</view>

@@ -1,0 +1,77 @@
+.page-points {
+  padding-bottom: 20rpx;
+}
+
+.points-header {
+  background: linear-gradient(135deg, #FF6B35, #FF8C5A);
+  padding: 60rpx 0 48rpx;
+  text-align: center;
+}
+
+.points-total {
+  font-size: 80rpx;
+  font-weight: 700;
+  color: #FFF;
+}
+
+.points-label {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 8rpx;
+}
+
+.points-list {
+  margin: 20rpx 24rpx;
+  background: #FFF;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.points-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.points-item:last-child {
+  border-bottom: none;
+}
+
+.points-item-type {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+
+.points-item-time {
+  font-size: 22rpx;
+  color: #BBB;
+}
+
+.points-item-right {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.points-item-right.plus {
+  color: #52C41A;
+}
+
+.points-item-right.minus {
+  color: #FF4D4F;
+}
+
+.loading-spinner {
+  width: 36rpx;
+  height: 36rpx;
+  border: 4rpx solid #EEE;
+  border-top-color: #FF6B35;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

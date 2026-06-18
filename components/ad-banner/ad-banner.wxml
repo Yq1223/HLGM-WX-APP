@@ -1,0 +1,20 @@
+<!--
+  广告位占位组件
+  使用方式：<ad-banner position="index_top" />
+  
+  position 可选值:
+    - index_top       首页顶部横幅
+    - index_between   首页列表间插屏
+    - detail_bottom   详情页底部
+    - mine_banner     个人中心横幅
+    - points_banner   积分页横幅
+  
+  当 showAd 为 false 时渲染占位容器，不显示任何内容。
+  后续接入广告SDK时，只需将 showAd 设为 true 并替换为真实广告组件即可。
+-->
+<view class="ad-wrap ad-{{position}}" wx:if="{{showAd}}">
+  <view class="ad-placeholder">
+    <text class="ad-tag">广告</text>
+    <text class="ad-text">{{adText}}</text>
+  </view>
+</view>

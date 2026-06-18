@@ -1,0 +1,147 @@
+.page-detail {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+  color: #999;
+}
+
+.loading-spinner {
+  width: 48rpx;
+  height: 48rpx;
+  border: 4rpx solid #EEE;
+  border-top-color: #FF6B35;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-bottom: 16rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 状态栏 */
+.status-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  background: #FFFBE6;
+}
+
+.reject-reason {
+  font-size: 24rpx;
+  color: #FF4D4F;
+  margin-left: 16rpx;
+}
+
+/* 内容卡片 */
+.content-card {
+  background: #FFF;
+  margin: 20rpx 24rpx;
+  border-radius: 12rpx;
+  padding: 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.info-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.4;
+  margin-bottom: 16rpx;
+}
+
+.info-meta {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.meta-dot {
+  margin: 0 8rpx;
+}
+
+.info-category {
+  margin-bottom: 16rpx;
+}
+
+.info-content {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.8;
+  word-break: break-all;
+}
+
+.info-steps {
+  margin-top: 32rpx;
+  padding: 24rpx;
+  background: #FFF9F0;
+  border-radius: 12rpx;
+  border-left: 6rpx solid #FF6B35;
+}
+
+.steps-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.steps-content {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.info-source {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.source-label {
+  color: #999;
+}
+
+.source-link {
+  color: #1890FF;
+  text-decoration: underline;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 操作栏 */
+.action-bar {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx 32rpx;
+  background: #FFF;
+  margin: 20rpx 24rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.btn-danger {
+  background: #FFF;
+  color: #FF4D4F;
+  border: 2rpx solid #FF4D4F;
+  border-radius: 28rpx;
+  height: 56rpx;
+  line-height: 52rpx;
+  font-size: 24rpx;
+  padding: 0 24rpx;
+}
+
+.btn-danger::after {
+  border: none;
+}

@@ -1,0 +1,69 @@
+<view class="page-admin">
+  <!-- 筛选Tab -->
+  <view class="filter-bar">
+    <view class="filter-item {{filterStatus === null ? 'active' : ''}}" bindtap="setFilter" data-status="">全部</view>
+    <view class="filter-item {{filterStatus === 0 ? 'active' : ''}}" bindtap="setFilter" data-status="0">待审核</view>
+    <view class="filter-item {{filterStatus === 1 ? 'active' : ''}}" bindtap="setFilter" data-status="1">已上线</view>
+    <view class="filter-item {{filterStatus === 2 ? 'active' : ''}}" bindtap="setFilter" data-status="2">已驳回</view>
+    <view class="filter-item {{filterStatus === 3 ? 'active' : ''}}" bindtap="setFilter" data-status="3">已下线</view>
+  </view>
+
+  <!-- 列表 -->
+  <view class="admin-list">
+    <view class="admin-card" wx:for="{{list}}" wx:key="id">
+      <!-- 可点击查看详情 -->
+      <view class="admin-card-header" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="admin-card-title">{{item.title}}</view>
+        <view class="tag tag-{{item.status === 0 ? 'pending' : item.status === 1 ? 'online' : item.status === 2 ? 'rejected' : 'offline'}}">
+          {{item.statusDesc}}
+        </view>
+      </view>
+
+      <!-- 内容摘要（方便审核） -->
+      <view class="admin-card-summary" wx:if="{{item.content}}" bindtap="goDetail" data-id="{{item.id}}">
+        {{item.content}}
+      </view>
+
+      <view class="admin-card-meta">
+        <text>发布者：{{item.authorName || '匿名'}}</text>
+        <text>{{item.createdAt}}</text>
+      </view>
+
+      <!-- 驳回理由 -->
+      <view class="admin-card-reject" wx:if="{{item.status === 2 && item.rejectReason}}">
+        <text class="reject-label">驳回理由：</text>
+        <text class="reject-text">{{item.rejectReason}}</text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="admin-card-actions">
+        <!-- 待审核：通过 + 驳回 -->
+        <block wx:if="{{item.status === 0}}">
+          <button class="action-btn action-pass" catchtap="onAudit" data-id="{{item.id}}" data-action="1">✅ 通过</button>
+          <button class="action-btn action-reject" catchtap="onAudit" data-id="{{item.id}}" data-action="2">❌ 驳回</button>
+        </block>
+        <!-- 已上线：下线 -->
+        <block wx:if="{{item.status === 1}}">
+          <button class="action-btn action-offline" catchtap="onToggle" data-id="{{item.id}}" data-online="false">⬇️ 下线</button>
+        </block>
+        <!-- 已下线/已驳回：上线 -->
+        <block wx:if="{{item.status === 3 || item.status === 2}}">
+          <button class="action-btn action-online" catchtap="onToggle" data-id="{{item.id}}" data-online="true">⬆️ 上线</button>
+        </block>
+        <button class="action-btn action-delete" catchtap="onDelete" data-id="{{item.id}}">🗑️</button>
+      </view>
+    </view>
+  </view>
+
+  <empty wx:if="{{!loading && list.length === 0}}"
+         emoji="📋"
+         title="暂无信息"
+         desc="当前筛选条件下没有数据" />
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{noMore && list.length > 0}}">— 没有更多了 —</view>
+</view>

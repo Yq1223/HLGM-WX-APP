@@ -1,0 +1,70 @@
+<view class="page-detail">
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <block wx:if="{{!loading && info}}">
+    <!-- 状态标签 -->
+    <view class="status-bar" wx:if="{{info.status !== 1}}">
+      <view class="tag tag-{{info.status === 0 ? 'pending' : info.status === 2 ? 'rejected' : 'offline'}}">
+        {{info.statusDesc}}
+      </view>
+      <text class="reject-reason" wx:if="{{info.status === 2 && info.rejectReason}}">
+        驳回理由：{{info.rejectReason}}
+      </text>
+    </view>
+
+    <!-- 内容区域 -->
+    <view class="content-card">
+      <view class="info-title">{{info.title}}</view>
+      <view class="info-meta">
+        <text class="meta-author">{{info.authorName || '匿名'}}</text>
+        <text class="meta-dot">·</text>
+        <text class="meta-time">{{info.createdAt}}</text>
+        <text class="meta-dot">·</text>
+        <text class="meta-views">👁 {{info.viewCount || 0}}</text>
+      </view>
+      <view class="info-category" wx:if="{{info.category}}">
+        <text class="tag tag-online">{{info.category}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="info-content">
+        <rich-text nodes="{{info.content}}"></rich-text>
+      </view>
+      <view class="info-steps" wx:if="{{info.claimSteps}}">
+        <view class="steps-title">📋 领取步骤</view>
+        <view class="steps-content">{{info.claimSteps}}</view>
+      </view>
+      <view class="info-source" wx:if="{{info.sourceUrl}}">
+        <text class="source-label">来源：</text>
+        <text class="source-link" bindtap="copySource">{{info.sourceUrl}}</text>
+      </view>
+    </view>
+
+    <!-- 广告位：详情页底部（预留） -->
+    <ad-banner position="detail_bottom" />
+
+    <!-- 操作按钮 - 发布者本人 -->
+    <view class="action-bar" wx:if="{{isOwner}}">
+      <button class="btn-secondary btn-sm" bindtap="onEdit">✏️ 编辑</button>
+      <button class="btn-danger btn-sm" bindtap="onDelete">🗑️ 删除</button>
+    </view>
+
+    <!-- 操作按钮 - 管理员 -->
+    <view class="action-bar" wx:if="{{isAdmin && !isOwner}}">
+      <block wx:if="{{info.status === 0}}">
+        <button class="btn-primary btn-sm" bindtap="onAuditPass">✅ 通过</button>
+        <button class="btn-danger btn-sm" bindtap="onAuditReject">❌ 驳回</button>
+      </block>
+      <block wx:if="{{info.status === 1}}">
+        <button class="btn-secondary btn-sm" bindtap="onToggleOnline" data-online="false">⬇️ 下线</button>
+      </block>
+      <block wx:if="{{info.status === 3 || info.status === 2}}">
+        <button class="btn-primary btn-sm" bindtap="onToggleOnline" data-online="true">⬆️ 上线</button>
+      </block>
+      <button class="btn-danger btn-sm" bindtap="onAdminDelete">🗑️ 删除</button>
+    </view>
+  </block>
+</view>

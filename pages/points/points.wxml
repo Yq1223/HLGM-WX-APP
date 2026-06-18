@@ -1,0 +1,32 @@
+<view class="page-points">
+  <!-- 积分概览 -->
+  <view class="points-header">
+    <view class="points-total">{{totalPoints}}</view>
+    <view class="points-label">当前积分</view>
+  </view>
+
+  <!-- 记录列表 -->
+  <view class="points-list">
+    <view class="points-item" wx:for="{{list}}" wx:key="id">
+      <view class="points-item-left">
+        <view class="points-item-type">{{item.changeTypeDesc || item.remark}}</view>
+        <view class="points-item-time">{{item.createdAt}}</view>
+      </view>
+      <view class="points-item-right {{item.changeValue > 0 ? 'plus' : 'minus'}}">
+        {{item.changeValue > 0 ? '+' : ''}}{{item.changeValue}}
+      </view>
+    </view>
+  </view>
+
+  <empty wx:if="{{!loading && list.length === 0}}"
+         emoji="📊"
+         title="暂无积分记录"
+         desc="发布信息审核通过可获得积分" />
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{noMore && list.length > 0}}">— 没有更多了 —</view>
+</view>

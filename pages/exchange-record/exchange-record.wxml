@@ -1,0 +1,5 @@
+<view class="page-exchange-record">
+  <empty emoji="📋"
+         title="暂无兑换记录"
+         desc="兑换商城上线后，您的兑换记录将在此展示" />
+</view>

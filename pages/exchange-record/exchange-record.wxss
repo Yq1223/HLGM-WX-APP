@@ -1,0 +1,4 @@
+.page-exchange-record {
+  min-height: 100vh;
+  background: #F5F5F5;
+}
