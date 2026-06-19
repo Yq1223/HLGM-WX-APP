@@ -2,10 +2,21 @@ App({
   globalData: {
     userInfo: null,
     token: '',
-    baseUrl: 'http://localhost:8080'
+    // ========== 微信云托管配置 ==========
+    cloudEnv: 'prod-d9gtitzfjf25274f9',     // 环境ID
+    serviceName: 'springboot-99oi',          // 服务名称
+    // 云托管公网域名（仅用于文件上传，因 callContainer 不支持 multipart）
+    cloudDomain: ''
   },
 
   onLaunch() {
+    // 初始化微信云开发能力
+    if (wx.cloud) {
+      wx.cloud.init({
+        env: this.globalData.cloudEnv
+      });
+    }
+
     // 从本地缓存恢复登录状态
     const token = wx.getStorageSync('token');
     const userInfo = wx.getStorageSync('userInfo');
