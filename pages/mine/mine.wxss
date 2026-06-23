@@ -107,12 +107,23 @@
 
 .admin-header {
   padding: 20rpx 24rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .admin-title {
   font-size: 28rpx;
   font-weight: 600;
   color: #333;
+}
+
+.admin-subscribe-btn {
+  font-size: 22rpx;
+  color: #FF6B35;
+  background: rgba(255, 107, 53, 0.1);
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
 }
 
 .admin-grid {

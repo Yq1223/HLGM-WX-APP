@@ -24,6 +24,20 @@ App({
     if (token && userInfo) {
       this.globalData.token = token;
       this.globalData.userInfo = userInfo;
+
+      // 用 token 向后端刷新最新用户信息（角色、积分等）
+      const { request } = require('./utils/request');
+      request({
+        url: '/api/auth/me',
+        method: 'GET'
+      }).then(res => {
+        const latest = res.data;
+        this.globalData.userInfo = latest;
+        wx.setStorageSync('userInfo', latest);
+      }).catch(() => {
+        // token 过期或无效，清除登录状态
+        this.clearLoginInfo();
+      });
     }
   },
 

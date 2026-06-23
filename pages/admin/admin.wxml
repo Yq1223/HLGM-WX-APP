@@ -1,11 +1,16 @@
 <view class="page-admin">
+  <!-- 顶部操作栏 -->
+  <view class="admin-top-bar">
+    <view class="subscribe-btn" bindtap="onSubscribeReview">{{subscribed ? '🔕 关闭审核通知' : '🔔 开启审核通知'}}</view>
+  </view>
+
   <!-- 筛选Tab -->
   <view class="filter-bar">
-    <view class="filter-item {{filterStatus === null ? 'active' : ''}}" bindtap="setFilter" data-status="">全部</view>
-    <view class="filter-item {{filterStatus === 0 ? 'active' : ''}}" bindtap="setFilter" data-status="0">待审核</view>
-    <view class="filter-item {{filterStatus === 1 ? 'active' : ''}}" bindtap="setFilter" data-status="1">已上线</view>
-    <view class="filter-item {{filterStatus === 2 ? 'active' : ''}}" bindtap="setFilter" data-status="2">已驳回</view>
-    <view class="filter-item {{filterStatus === 3 ? 'active' : ''}}" bindtap="setFilter" data-status="3">已下线</view>
+    <view class="filter-item {{filterStatus == null ? 'active' : ''}}" bindtap="setFilter" data-status="">全部</view>
+    <view class="filter-item {{filterStatus == 0 ? 'active' : ''}}" bindtap="setFilter" data-status="0">待审核</view>
+    <view class="filter-item {{filterStatus == 1 ? 'active' : ''}}" bindtap="setFilter" data-status="1">已上线</view>
+    <view class="filter-item {{filterStatus == 2 ? 'active' : ''}}" bindtap="setFilter" data-status="2">已驳回</view>
+    <view class="filter-item {{filterStatus == 3 ? 'active' : ''}}" bindtap="setFilter" data-status="3">已下线</view>
   </view>
 
   <!-- 列表 -->

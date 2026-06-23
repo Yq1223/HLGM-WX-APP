@@ -16,19 +16,23 @@ Page({
     // 登录弹窗
     showLoginDialog: false,
     tempAvatarUrl: '',
-    tempNickname: ''
+    tempNickname: '',
+    // 订阅状态
+    subscribed: false
   },
 
   onShow() {
     const userInfo = app.globalData.userInfo;
+    const isAdmin = userInfo && userInfo.role === 1;
     this.setData({
       userInfo: userInfo,
-      isAdmin: userInfo && userInfo.role === 1
+      isAdmin: isAdmin
     });
     if (userInfo) {
       this.loadMyList(true);
+      if (isAdmin) this._checkSubscribeStatus();
     } else {
-      this.setData({ myList: [], noMore: false });
+      this.setData({ myList: [], noMore: false, subscribed: false });
     }
   },
 
@@ -184,5 +188,74 @@ Page({
       url += '?status=' + filter;
     }
     wx.navigateTo({ url });
+  },
+
+  // 查询订阅状态
+  _checkSubscribeStatus() {
+    request({
+      url: '/api/admin/subscribe/status',
+      method: 'GET'
+    }).then(res => {
+      this.setData({ subscribed: res.data.subscribed });
+    }).catch(() => {});
+  },
+
+  // 用户点击订阅按钮（切换开启/关闭）
+  onSubscribeReview() {
+    const tplId = app.globalData.reviewTplId;
+    const isSubscribed = this.data.subscribed;
+
+    if (!isSubscribed) {
+      // 未订阅，先弹微信授权
+      if (!wx.requestSubscribeMessage) {
+        wx.showToast({ title: '当前微信版本不支持订阅消息', icon: 'none' });
+        return;
+      }
+      wx.requestSubscribeMessage({
+        tmplIds: [tplId],
+        success: (res) => {
+          if (res[tplId] === 'accept') {
+            this._toggleSubscribe(tplId);
+          } else if (res[tplId] === 'reject') {
+            // 用户拒绝过，引导去设置手动开启
+            wx.showModal({
+              title: '订阅被拒绝',
+              content: '您之前拒绝了订阅通知，请前往小程序设置手动开启',
+              confirmText: '去设置',
+              success: (modalRes) => {
+                if (modalRes.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          }
+        },
+        fail: () => {
+          wx.showToast({ title: '订阅失败，请重试', icon: 'none' });
+        }
+      });
+    } else {
+      // 已订阅，直接关闭
+      this._toggleSubscribe(tplId);
+    }
+  },
+
+  // 切换订阅状态
+  _toggleSubscribe(templateId) {
+    request({
+      url: '/api/admin/subscribe/toggle',
+      method: 'POST',
+      data: { templateId }
+    }).then(res => {
+      const subscribed = res.data.subscribed;
+      this.setData({ subscribed });
+      wx.showToast({
+        title: subscribed ? '已开启审核通知' : '已关闭审核通知',
+        icon: 'success'
+      });
+    }).catch(err => {
+      console.error('切换订阅状态失败:', err);
+      wx.showToast({ title: '操作失败，请重试', icon: 'none' });
+    });
   }
 });

@@ -35,6 +35,9 @@
   <view class="admin-section" wx:if="{{isAdmin}}">
     <view class="admin-header">
       <text class="admin-title">👑 管理员工具</text>
+      <view class="admin-subscribe-btn" bindtap="onSubscribeReview">
+        <text>{{subscribed ? '🔕 关闭审核通知' : '🔔 开启审核通知'}}</text>
+      </view>
     </view>
     <view class="admin-grid">
       <view class="admin-grid-item" bindtap="goAdmin" data-filter="0">
