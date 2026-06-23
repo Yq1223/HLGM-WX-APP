@@ -1,5 +1,6 @@
 const { request } = require('../../utils/request');
 const { formatTime, getSummary } = require('../../utils/util');
+const app = getApp();
 
 Page({
   data: {
@@ -17,6 +18,12 @@ Page({
   },
 
   onShow() {
+    // 发布/编辑完成后跳转回来，自动刷新列表
+    if (app.globalData.needRefreshList) {
+      app.globalData.needRefreshList = false;
+      this.loadList(true);
+      return;
+    }
     // 每次页面显示时，如果距离上次刷新超过3秒，自动刷新
     const now = Date.now();
     if (now - this.data.lastRefreshTime > 3000) {

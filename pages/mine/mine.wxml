@@ -63,8 +63,8 @@
   <!-- 广告位：个人中心横幅（预留） -->
   <ad-banner position="mine_banner" />
 
-  <!-- 功能入口 -->
-  <view class="func-card" wx:if="{{userInfo}}">
+  <!-- 功能入口（默认展示） -->
+  <view class="func-card">
     <view class="func-item" bindtap="goExchange">
       <text class="func-icon">🎁</text>
       <text class="func-text">积分兑换</text>
@@ -75,7 +75,7 @@
       <text class="func-text">兑换记录</text>
       <text class="func-arrow">></text>
     </view>
-    <view class="func-item" wx:if="{{!isAdmin}}" bindtap="goAdmin">
+    <view class="func-item" wx:if="{{userInfo && !isAdmin}}" bindtap="goAdmin">
       <text class="func-icon">⚙️</text>
       <text class="func-text">审核管理</text>
       <text class="func-desc">仅管理员可用</text>

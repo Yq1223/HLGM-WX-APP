@@ -1,5 +1,6 @@
 const { request } = require('../../utils/request');
 const { formatTime } = require('../../utils/util');
+const { ensureLogin } = require('../../utils/auth');
 const app = getApp();
 
 Page({
@@ -159,15 +160,21 @@ Page({
   },
 
   goPoints() {
-    wx.navigateTo({ url: '/pages/points/points' });
+    ensureLogin().then(() => {
+      wx.navigateTo({ url: '/pages/points/points' });
+    }).catch(() => {});
   },
 
   goExchange() {
-    wx.navigateTo({ url: '/pages/exchange/exchange' });
+    ensureLogin().then(() => {
+      wx.navigateTo({ url: '/pages/exchange/exchange' });
+    }).catch(() => {});
   },
 
   goExchangeRecord() {
-    wx.navigateTo({ url: '/pages/exchange-record/exchange-record' });
+    ensureLogin().then(() => {
+      wx.navigateTo({ url: '/pages/exchange-record/exchange-record' });
+    }).catch(() => {});
   },
 
   goAdmin(e) {

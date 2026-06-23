@@ -6,7 +6,8 @@ App({
     cloudEnv: 'prod-d9gtitzfjf25274f9',     // 环境ID
     serviceName: 'springboot-99oi',          // 服务名称
     // 云托管公网域名（仅用于文件上传，因 callContainer 不支持 multipart）
-    cloudDomain: ''
+    cloudDomain: '',
+    reviewTplId: 'B9vbbAbrIXKs-bixV75Lm9lcCO1pfZZSbr0LZyHDMwo'
   },
 
   onLaunch() {
