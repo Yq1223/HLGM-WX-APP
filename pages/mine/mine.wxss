@@ -337,6 +337,18 @@
   color: #FF6B35;
 }
 
+/* 头像禁用状态 */
+.login-avatar-disabled {
+  opacity: 0.8;
+}
+
+.login-avatar-disabled .login-avatar-hint {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+  margin-top: 8rpx;
+}
+
 /* 昵称输入 */
 .login-nickname-wrap {
   margin-bottom: 40rpx;
@@ -349,6 +361,15 @@
   font-size: 28rpx;
   height: 80rpx;
   text-align: center;
+}
+
+/* 昵称禁用状态 */
+.login-nickname-disabled {
+  background: #F5F5F5;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 确认按钮 */

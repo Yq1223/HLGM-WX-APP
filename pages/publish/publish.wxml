@@ -1,5 +1,5 @@
 <view class="page-publish">
-  <!-- 批量导入入口 -->
+  <!-- 批量导入入口（暂时隐藏）
   <view class="import-banner" bindtap="onBatchImport">
     <view class="import-left">
       <text class="import-icon">📥</text>
@@ -10,29 +10,7 @@
     </view>
     <text class="import-arrow">></text>
   </view>
-
-  <!-- 导入结果弹窗 -->
-  <view class="import-mask" wx:if="{{showImportResult}}" bindtap="closeImportResult">
-    <view class="import-result-card" catchtap="">
-      <view class="result-header">导入结果</view>
-      <view class="result-body">
-        <view class="result-row success">
-          <text class="result-icon">✅</text>
-          <text>成功导入 <text class="result-num">{{importResult.successCount}}</text> 条</text>
-        </view>
-        <view class="result-row fail" wx:if="{{importResult.failCount > 0}}">
-          <text class="result-icon">❌</text>
-          <text>失败 <text class="result-num">{{importResult.failCount}}</text> 条</text>
-        </view>
-        <view class="result-detail" wx:if="{{importResult.failDetails.length > 0}}">
-          <view class="detail-item" wx:for="{{importResult.failDetails}}" wx:key="*this">
-            {{item}}
-          </view>
-        </view>
-      </view>
-      <button class="result-btn" bindtap="closeImportResult">我知道了</button>
-    </view>
-  </view>
+  -->
 
   <view class="form-card">
     <!-- 标题 -->

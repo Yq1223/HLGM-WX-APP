@@ -26,16 +26,14 @@
 
 /* 状态栏 */
 .status-bar {
-  display: flex;
-  align-items: center;
   padding: 16rpx 32rpx;
   background: #FFFBE6;
 }
 
 .reject-reason {
+  display: block;
   font-size: 24rpx;
   color: #FF4D4F;
-  margin-left: 16rpx;
 }
 
 /* 内容卡片 */

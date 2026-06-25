@@ -69,8 +69,8 @@ App({
     wx.removeStorageSync('userInfo');
   },
 
-  // 微信登录（支持传入昵称和头像）
-  wxLogin(nickname, avatarUrl) {
+  // 微信登录（检查是否已注册）
+  wxLogin() {
     return new Promise((resolve, reject) => {
       wx.login({
         success: (loginRes) => {
@@ -80,21 +80,25 @@ App({
               url: '/api/auth/login',
               method: 'POST',
               data: {
-                code: loginRes.code,
-                nickname: nickname || '',
-                avatarUrl: avatarUrl || ''
+                code: loginRes.code
               }
             }).then(res => {
               if (res.code === 0) {
                 const data = res.data;
-                this.setLoginInfo(data.token, {
-                  userId: data.userId,
-                  nickname: data.nickname,
-                  avatarUrl: data.avatarUrl,
-                  role: data.role,
-                  points: data.points
-                });
-                resolve(data);
+                if (data.needRegister) {
+                  // 新用户，返回 code 和标记
+                  resolve({ needRegister: true, code: loginRes.code });
+                } else {
+                  // 已有用户，直接登录
+                  this.setLoginInfo(data.token, {
+                    userId: data.userId,
+                    nickname: data.nickname,
+                    avatarUrl: data.avatarUrl,
+                    role: data.role,
+                    points: data.points
+                  });
+                  resolve({ needRegister: false, data });
+                }
               } else {
                 reject(res.msg);
               }
@@ -105,6 +109,36 @@ App({
         },
         fail: reject
       });
+    });
+  },
+
+  // 新用户注册
+  wxRegister(code, nickname, avatarUrl) {
+    return new Promise((resolve, reject) => {
+      const { request } = require('./utils/request');
+      request({
+        url: '/api/auth/register',
+        method: 'POST',
+        data: {
+          code: code,
+          nickname: nickname || '微信用户',
+          avatarUrl: avatarUrl || ''
+        }
+      }).then(res => {
+        if (res.code === 0) {
+          const data = res.data;
+          this.setLoginInfo(data.token, {
+            userId: data.userId,
+            nickname: data.nickname,
+            avatarUrl: data.avatarUrl,
+            role: data.role,
+            points: data.points
+          });
+          resolve(data);
+        } else {
+          reject(res.msg);
+        }
+      }).catch(reject);
     });
   }
 });

@@ -2,7 +2,7 @@
   <!-- 用户信息区 -->
   <view class="user-header">
     <view class="user-info" wx:if="{{userInfo}}">
-      <image class="avatar" src="{{userInfo.avatarUrl || '/images/logo-200.png'}}" mode="aspectFill" bindtap="onChangeAvatar" />
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/logo-200.png'}}" mode="aspectFill" />
       <view class="user-detail">
         <view class="nickname">{{userInfo.nickname || '微信用户'}}</view>
         <view class="user-tag admin" wx:if="{{isAdmin}}">👑 管理员</view>
@@ -131,31 +131,50 @@
     <view class="no-more" wx:if="{{noMore && myList.length > 0}}">— 没有更多了 —</view>
   </view>
 
-  <!-- 微信头像昵称选择弹窗（登录时用） -->
-  <view class="login-mask" wx:if="{{showLoginDialog}}" bindtap="closeLoginDialog">
-    <view class="login-card" catchtap="">
-      <view class="login-title">完善个人信息</view>
-      <view class="login-desc">获取您的微信头像和昵称</view>
+  <!-- 微信授权登录弹窗 -->
+  <view class="login-mask" wx:if="{{showLoginDialog}}">
+    <view class="login-card">
+      <view class="login-title">微信授权登录</view>
+      <view class="login-desc">{{isCachedUser ? '使用上次登录的信息' : '请选择您的微信头像和昵称'}}</view>
 
       <!-- 头像选择 -->
       <view class="login-avatar-wrap">
-        <button class="login-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-          <image class="login-avatar-img" src="{{tempAvatarUrl || '/images/logo-200.png'}}" mode="aspectFill" />
-          <text class="login-avatar-hint">点击选择头像</text>
-        </button>
+        <block wx:if="{{isCachedUser}}">
+          <!-- 已有历史信息，禁用状态 -->
+          <view class="login-avatar-btn login-avatar-disabled">
+            <image class="login-avatar-img" src="{{tempAvatarUrl || '/images/logo-200.png'}}" mode="aspectFill" />
+            <text class="login-avatar-hint">{{tempNickname}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <!-- 新用户，可选择 -->
+          <button class="login-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+            <image class="login-avatar-img" src="{{tempAvatarUrl || '/images/logo-200.png'}}" mode="aspectFill" />
+            <text class="login-avatar-hint">点击选择头像</text>
+          </button>
+        </block>
       </view>
 
       <!-- 昵称输入 -->
       <view class="login-nickname-wrap">
-        <input class="login-nickname-input"
-               type="nickname"
-               placeholder="请输入昵称"
-               value="{{tempNickname}}"
-               bindinput="onNicknameInput"
-               bindblur="onNicknameBlur" />
+        <block wx:if="{{isCachedUser}}">
+          <!-- 已有历史信息，禁用状态 -->
+          <view class="login-nickname-input login-nickname-disabled">
+            <text>{{tempNickname}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <!-- 新用户，可输入 -->
+          <input class="login-nickname-input"
+                 type="nickname"
+                 placeholder="点击获取微信昵称"
+                 value="{{tempNickname}}"
+                 bindinput="onNicknameInput"
+                 bindblur="onNicknameBlur" />
+        </block>
       </view>
 
-      <button class="login-confirm-btn" bindtap="confirmLogin">确认登录</button>
+      <button class="login-confirm-btn" bindtap="confirmLogin">登录</button>
     </view>
   </view>
 </view>

@@ -17,6 +17,7 @@ Page({
     showLoginDialog: false,
     tempAvatarUrl: '',
     tempNickname: '',
+    isCachedUser: false,  // 是否有历史用户信息
     // 订阅状态
     subscribed: false
   },
@@ -53,11 +54,34 @@ Page({
   // ========== 登录流程 ==========
 
   onLogin() {
-    // 弹出头像昵称选择弹窗
-    this.setData({
-      showLoginDialog: true,
-      tempAvatarUrl: '',
-      tempNickname: ''
+    wx.showLoading({ title: '登录中...', mask: true });
+
+    // 调用后端检查是否已注册
+    app.wxLogin().then(result => {
+      wx.hideLoading();
+
+      if (result.needRegister) {
+        // 新用户，显示选择界面
+        this.setData({
+          showLoginDialog: true,
+          tempAvatarUrl: '',
+          tempNickname: '',
+          isCachedUser: false,
+          pendingCode: result.code  // 保存 code 用于后续注册
+        });
+      } else {
+        // 已有用户，显示信息（禁用状态）
+        const data = result.data;
+        this.setData({
+          showLoginDialog: true,
+          tempAvatarUrl: data.avatarUrl || '',
+          tempNickname: data.nickname || '',
+          isCachedUser: true
+        });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: '登录失败', icon: 'none' });
     });
   },
 
@@ -74,48 +98,42 @@ Page({
     this.setData({ tempNickname: e.detail.value });
   },
 
-  closeLoginDialog() {
-    this.setData({ showLoginDialog: false });
-  },
-
   confirmLogin() {
-    const { tempNickname, tempAvatarUrl } = this.data;
-    const nickname = tempNickname || '微信用户';
-    const avatarUrl = tempAvatarUrl || '';
+    const { isCachedUser, tempNickname, tempAvatarUrl, pendingCode } = this.data;
 
-    wx.showLoading({ title: '登录中...', mask: true });
-
-    app.wxLogin(nickname, avatarUrl).then(data => {
-      wx.hideLoading();
+    if (isCachedUser) {
+      // 已有用户，登录已完成，直接关闭弹窗
       this.setData({
         showLoginDialog: false,
         userInfo: app.globalData.userInfo,
-        isAdmin: data.role === 1
+        isAdmin: app.globalData.userInfo.role === 1
       });
       this.loadMyList(true);
       wx.showToast({ title: '登录成功', icon: 'success' });
-    }).catch(err => {
-      wx.hideLoading();
-      wx.showToast({ title: '登录失败', icon: 'none' });
-    });
+    } else {
+      // 新用户，调用注册接口
+      const nickname = tempNickname || '微信用户';
+      const avatarUrl = tempAvatarUrl || '';
+
+      wx.showLoading({ title: '注册中...', mask: true });
+
+      app.wxRegister(pendingCode, nickname, avatarUrl).then(data => {
+        wx.hideLoading();
+        this.setData({
+          showLoginDialog: false,
+          userInfo: app.globalData.userInfo,
+          isAdmin: data.role === 1
+        });
+        this.loadMyList(true);
+        wx.showToast({ title: '注册成功', icon: 'success' });
+      }).catch(err => {
+        wx.hideLoading();
+        wx.showToast({ title: err || '注册失败', icon: 'none' });
+      });
+    }
   },
 
-  onChangeAvatar() {
-    // 已登录用户更换头像
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const avatarUrl = res.tempFiles[0].tempFilePath;
-        // 这里可以上传头像到服务器，暂时只更新本地
-        const userInfo = { ...this.data.userInfo, avatarUrl };
-        app.globalData.userInfo = userInfo;
-        wx.setStorageSync('userInfo', userInfo);
-        this.setData({ userInfo });
-      }
-    });
-  },
+
 
   // ========== 加载我的发布 ==========
 
