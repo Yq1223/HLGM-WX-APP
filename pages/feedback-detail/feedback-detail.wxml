@@ -1,0 +1,59 @@
+<view class="page-detail">
+  <!-- 反馈信息 -->
+  <view class="info-card">
+    <view class="info-header">
+      <view class="info-title">{{feedback.title}}</view>
+      <view class="tag tag-{{feedback.status === 0 ? 'pending' : feedback.status === 1 ? 'progress' : 'done'}}">
+        {{feedback.statusDesc}}
+      </view>
+    </view>
+    <view class="info-meta">
+      <text>提交时间：{{feedback.createdAt}}</text>
+    </view>
+    <view class="info-content">{{feedback.content}}</view>
+  </view>
+
+  <!-- 管理员回复 -->
+  <view class="reply-card" wx:if="{{feedback.reply}}">
+    <view class="reply-header">
+      <text class="reply-icon">💬</text>
+      <text class="reply-title">管理员回复</text>
+    </view>
+    <view class="reply-content">{{feedback.reply}}</view>
+  </view>
+
+  <!-- 管理员操作区 -->
+  <view class="admin-section" wx:if="{{isAdmin}}">
+    <view class="section-title">处理反馈</view>
+    
+    <view class="status-options">
+      <view class="status-option {{selectedStatus === 0 ? 'active' : ''}}" 
+            bindtap="selectStatus" data-status="0">
+        <text class="status-dot pending"></text>
+        <text>待处理</text>
+      </view>
+      <view class="status-option {{selectedStatus === 1 ? 'active' : ''}}" 
+            bindtap="selectStatus" data-status="1">
+        <text class="status-dot progress"></text>
+        <text>进行中</text>
+      </view>
+      <view class="status-option {{selectedStatus === 2 ? 'active' : ''}}" 
+            bindtap="selectStatus" data-status="2">
+        <text class="status-dot done"></text>
+        <text>已完成</text>
+      </view>
+    </view>
+
+    <view class="reply-input-wrap">
+      <view class="form-label">回复内容（可选）</view>
+      <textarea class="reply-textarea" 
+                placeholder="输入回复内容..." 
+                value="{{replyContent}}" 
+                bindinput="onReplyInput" />
+    </view>
+
+    <button class="audit-btn" bindtap="onAudit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交处理'}}
+    </button>
+  </view>
+</view>

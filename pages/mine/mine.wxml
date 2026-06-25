@@ -60,6 +60,11 @@
         <text class="grid-text">已驳回</text>
         <text class="grid-desc">驳回记录</text>
       </view>
+      <view class="admin-grid-item" bindtap="goFeedbackAdmin">
+        <text class="grid-icon">💬</text>
+        <text class="grid-text">反馈管理</text>
+        <text class="grid-desc">处理用户反馈</text>
+      </view>
     </view>
   </view>
 
@@ -78,10 +83,9 @@
       <text class="func-text">兑换记录</text>
       <text class="func-arrow">></text>
     </view>
-    <view class="func-item" wx:if="{{userInfo && !isAdmin}}" bindtap="goAdmin">
-      <text class="func-icon">⚙️</text>
-      <text class="func-text">审核管理</text>
-      <text class="func-desc">仅管理员可用</text>
+    <view class="func-item" wx:if="{{userInfo}}" bindtap="goFeedback">
+      <text class="func-icon">💬</text>
+      <text class="func-text">意见反馈</text>
       <text class="func-arrow">></text>
     </view>
   </view>

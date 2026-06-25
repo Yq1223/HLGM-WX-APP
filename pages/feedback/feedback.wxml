@@ -1,0 +1,42 @@
+<view class="page-feedback">
+  <!-- 提交反馈按钮 -->
+  <view class="submit-btn-wrap">
+    <button class="submit-btn" bindtap="goSubmit">+ 提交新反馈</button>
+  </view>
+
+  <!-- Tab栏 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === -1 ? 'active' : ''}}" bindtap="switchTab" data-tab="-1">全部</view>
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">待处理</view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">进行中</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">已完成</view>
+  </view>
+
+  <!-- 反馈列表 -->
+  <view class="feedback-list">
+    <view class="feedback-card" wx:for="{{feedbackList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="feedback-card-top">
+        <view class="feedback-title">{{item.title}}</view>
+        <view class="tag tag-{{item.status === 0 ? 'pending' : item.status === 1 ? 'progress' : 'done'}}">
+          {{item.statusDesc}}
+        </view>
+      </view>
+      <view class="feedback-content">{{item.content}}</view>
+      <view class="feedback-meta">
+        <text>{{item.createdAt}}</text>
+      </view>
+    </view>
+
+    <empty wx:if="{{!loading && feedbackList.length === 0}}"
+           emoji="💬"
+           title="暂无反馈记录"
+           desc="有问题？点击上方按钮提交反馈" />
+
+    <view class="loading-wrap" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{noMore && feedbackList.length > 0}}">— 没有更多了 —</view>
+  </view>
+</view>

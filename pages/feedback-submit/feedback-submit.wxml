@@ -1,0 +1,35 @@
+<view class="page-submit">
+  <view class="form-card">
+    <view class="form-item">
+      <view class="form-label">反馈标题</view>
+      <input class="form-input" 
+             placeholder="请输入反馈标题（最多128字）" 
+             maxlength="128"
+             value="{{title}}" 
+             bindinput="onTitleInput" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">反馈内容</view>
+      <textarea class="form-textarea" 
+                placeholder="请详细描述您的问题或建议" 
+                maxlength="1000"
+                value="{{content}}" 
+                bindinput="onContentInput" />
+      <view class="word-count">{{content.length}}/1000</view>
+    </view>
+  </view>
+
+  <view class="tip-card">
+    <view class="tip-title">💡 温馨提示</view>
+    <view class="tip-text">• 请详细描述您遇到的问题或建议</view>
+    <view class="tip-text">• 我们会尽快处理您的反馈</view>
+    <view class="tip-text">• 处理结果会在"我的反馈"中显示</view>
+  </view>
+
+  <view class="btn-wrap">
+    <button class="submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交反馈'}}
+    </button>
+  </view>
+</view>

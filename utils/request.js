@@ -54,14 +54,19 @@ function request(options) {
         } else if (res.statusCode === 401) {
           // token过期或未登录
           app.clearLoginInfo();
-          wx.showModal({
-            title: '提示',
-            content: '登录已过期，请重新登录',
-            showCancel: false,
-            success() {
-              wx.switchTab({ url: '/pages/mine/mine' });
-            }
-          });
+          // 防止重复弹窗
+          if (!app.globalData.isShowingAuthError) {
+            app.globalData.isShowingAuthError = true;
+            wx.showModal({
+              title: '提示',
+              content: '登录已过期，请重新登录',
+              showCancel: false,
+              success() {
+                app.globalData.isShowingAuthError = false;
+                wx.switchTab({ url: '/pages/mine/mine' });
+              }
+            });
+          }
           reject({ code: 401, msg: '未登录' });
         } else {
           wx.showToast({ title: '服务器错误', icon: 'none' });

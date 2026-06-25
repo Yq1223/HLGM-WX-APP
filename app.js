@@ -7,7 +7,9 @@ App({
     serviceName: 'springboot-99oi',          // 服务名称
     // 云托管公网域名（仅用于文件上传，因 callContainer 不支持 multipart）
     cloudDomain: '',
-    reviewTplId: 'B9vbbAbrIXKs-bixV75Lm9lcCO1pfZZSbr0LZyHDMwo'
+    reviewTplId: 'B9vbbAbrIXKs-bixV75Lm9lcCO1pfZZSbr0LZyHDMwo',
+    // 防止重复弹窗
+    isShowingAuthError: false
   },
 
   onLaunch() {

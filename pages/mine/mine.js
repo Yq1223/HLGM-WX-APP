@@ -190,6 +190,16 @@ Page({
     wx.navigateTo({ url });
   },
 
+  goFeedback() {
+    ensureLogin().then(() => {
+      wx.navigateTo({ url: '/pages/feedback/feedback' });
+    }).catch(() => {});
+  },
+
+  goFeedbackAdmin() {
+    wx.navigateTo({ url: '/pages/feedback-admin/feedback-admin' });
+  },
+
   // 查询订阅状态
   _checkSubscribeStatus() {
     request({
