@@ -6,6 +6,8 @@ Page({
   data: {
     list: [],
     keyword: '',
+    category: '',  // 当前选中的分类
+    categories: ['会员', '话费', '外卖', '电商', '生活', '出行', '美食', '其他'],
     pageNum: 1,
     pageSize: 10,
     loading: false,
@@ -54,7 +56,8 @@ Page({
       data: {
         pageNum: pageNum,
         pageSize: this.data.pageSize,
-        keyword: this.data.keyword || ''
+        keyword: this.data.keyword || '',
+        category: this.data.category || ''
       }
     }).then(res => {
       const records = (res.data.records || []).map(item => ({
@@ -85,6 +88,14 @@ Page({
 
   clearSearch() {
     this.setData({ keyword: '' });
+    this.loadList(true);
+  },
+
+  // 切换分类筛选
+  onCategory(e) {
+    const val = e.currentTarget.dataset.val;
+    const category = this.data.category === val ? '' : val;
+    this.setData({ category });
     this.loadList(true);
   },
 

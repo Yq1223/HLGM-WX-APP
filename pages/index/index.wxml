@@ -25,6 +25,20 @@
     </view>
   </view>
 
+  <!-- 分类筛选 -->
+  <view class="category-bar">
+    <view class="category-scroll">
+      <view class="category-tag {{category === '' ? 'active' : ''}}" bindtap="onCategory" data-val="">
+        全部
+      </view>
+      <view class="category-tag {{category === item ? 'active' : ''}}"
+            wx:for="{{categories}}" wx:key="*this"
+            bindtap="onCategory" data-val="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
   <!-- 广告位：首页顶部横幅（预留） -->
   <ad-banner position="index_top" />
 
