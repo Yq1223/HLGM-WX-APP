@@ -15,6 +15,7 @@ Page({
   onLoad(options) {
     this.setData({
       feedbackId: options.id,
+      fromAdmin: options.from === 'admin',
       isAdmin: app.globalData.userInfo && app.globalData.userInfo.role === 1
     });
     this.loadDetail();

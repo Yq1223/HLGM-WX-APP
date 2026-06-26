@@ -22,8 +22,8 @@
     <view class="reply-content">{{feedback.reply}}</view>
   </view>
 
-  <!-- 管理员操作区 -->
-  <view class="admin-section" wx:if="{{isAdmin}}">
+  <!-- 管理员操作区：仅从反馈管理进入且待处理状态可操作 -->
+  <view class="admin-section" wx:if="{{fromAdmin && isAdmin && feedback.status === 0}}">
     <view class="section-title">处理反馈</view>
     
     <view class="status-options">

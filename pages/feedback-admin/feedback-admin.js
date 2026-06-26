@@ -71,6 +71,6 @@ Page({
 
   // 跳转到反馈详情
   goDetail(e) {
-    wx.navigateTo({ url: '/pages/feedback-detail/feedback-detail?id=' + e.currentTarget.dataset.id });
+    wx.navigateTo({ url: '/pages/feedback-detail/feedback-detail?id=' + e.currentTarget.dataset.id + '&from=admin' });
   }
 });
