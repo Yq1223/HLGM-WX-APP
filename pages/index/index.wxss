@@ -2,11 +2,15 @@
   padding-bottom: 20rpx;
 }
 
-/* 搜索栏 */
-.search-bar {
+/* 整体 sticky 头部 */
+.sticky-header {
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+/* 搜索栏 */
+.search-bar {
   background: linear-gradient(135deg, #FF6B35, #FF8C5A);
   padding: 16rpx 24rpx 24rpx;
 }

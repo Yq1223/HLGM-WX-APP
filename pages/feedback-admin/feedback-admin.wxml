@@ -5,6 +5,7 @@
     <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">待处理</view>
     <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">进行中</view>
     <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">已完成</view>
+    <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-tab="3">不处理</view>
   </view>
 
   <!-- 反馈列表 -->
@@ -12,7 +13,7 @@
     <view class="feedback-card" wx:for="{{feedbackList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
       <view class="feedback-card-top">
         <view class="feedback-title">{{item.title}}</view>
-        <view class="tag tag-{{item.status === 0 ? 'pending' : item.status === 1 ? 'progress' : 'done'}}">
+        <view class="tag tag-{{item.status === 0 ? 'pending' : item.status === 1 ? 'progress' : item.status === 2 ? 'done' : 'ignore'}}">
           {{item.statusDesc}}
         </view>
       </view>

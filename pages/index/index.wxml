@@ -1,40 +1,42 @@
 <view class="page-index">
-  <!-- 品牌头部 -->
-  <view class="search-bar">
-    <view class="brand-top">
-      <view class="brand-info">
-        <image class="brand-logo" src="/images/logo-200.png" mode="aspectFill" />
-        <view class="brand-text">
-          <text class="brand-name">薅了个毛</text>
-          <text class="brand-slogan">本来不想薅的，但它实在太便宜了</text>
+  <!-- 品牌头部 + 搜索栏 + 分类筛选（整体 sticky 固定） -->
+  <view class="sticky-header">
+    <view class="search-bar">
+      <view class="brand-top">
+        <view class="brand-info">
+          <image class="brand-logo" src="/images/logo-200.png" mode="aspectFill" />
+          <view class="brand-text">
+            <text class="brand-name">薅了个毛</text>
+            <text class="brand-slogan">本来不想薅的，但它实在太便宜了</text>
+          </view>
         </view>
       </view>
-    </view>
 
-    <!-- 搜索栏 -->
-    <view class="search-input-wrap">
-      <text class="search-icon">🔍</text>
-      <input class="search-input"
-             placeholder="搜索羊毛信息..."
-             placeholder-class="search-placeholder"
-             value="{{keyword}}"
-             confirm-type="search"
-             bindinput="onSearchInput"
-             bindconfirm="onSearch" />
-      <text class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">✕</text>
-    </view>
-  </view>
-
-  <!-- 分类筛选 -->
-  <view class="category-bar">
-    <view class="category-scroll">
-      <view class="category-tag {{category === '' ? 'active' : ''}}" bindtap="onCategory" data-val="">
-        全部
+      <!-- 搜索栏 -->
+      <view class="search-input-wrap">
+        <text class="search-icon">🔍</text>
+        <input class="search-input"
+               placeholder="搜索羊毛信息..."
+               placeholder-class="search-placeholder"
+               value="{{keyword}}"
+               confirm-type="search"
+               bindinput="onSearchInput"
+               bindconfirm="onSearch" />
+        <text class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">✕</text>
       </view>
-      <view class="category-tag {{category === item ? 'active' : ''}}"
-            wx:for="{{categories}}" wx:key="*this"
-            bindtap="onCategory" data-val="{{item}}">
-        {{item}}
+    </view>
+
+    <!-- 分类筛选 -->
+    <view class="category-bar">
+      <view class="category-scroll">
+        <view class="category-tag {{category === '' ? 'active' : ''}}" bindtap="onCategory" data-val="">
+          全部
+        </view>
+        <view class="category-tag {{category === item ? 'active' : ''}}"
+              wx:for="{{categories}}" wx:key="*this"
+              bindtap="onCategory" data-val="{{item}}">
+          {{item}}
+        </view>
       </view>
     </view>
   </view>

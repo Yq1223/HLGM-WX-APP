@@ -10,6 +10,10 @@
   background: #fff;
   padding: 20rpx 0;
   margin-bottom: 20rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .tab-item {
@@ -88,6 +92,11 @@
 .tag-done {
   background: #E8F5E9;
   color: #4CAF50;
+}
+
+.tag-ignore {
+  background: #F5F5F5;
+  color: #999;
 }
 
 .feedback-content {

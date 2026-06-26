@@ -1,21 +1,30 @@
 .page-feedback {
   min-height: 100vh;
   background: #f5f5f5;
-  padding-bottom: 30rpx;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
 }
 
-.submit-btn-wrap {
-  padding: 20rpx 30rpx;
-  background: #fff;
+/* ========== 底部提交按钮 ========== */
+.submit-wrap {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  padding: 20rpx 32rpx;
+  background: #FFF;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.04);
+  z-index: 100;
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #FF6B35, #FF8C42);
+  margin: 0;
+  background: linear-gradient(135deg, #FF6B35, #FF8C5A);
   color: #fff;
   border: none;
-  border-radius: 12rpx;
-  font-size: 30rpx;
-  padding: 20rpx 0;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  height: 88rpx;
+  line-height: 88rpx;
 }
 
 .submit-btn::after {
@@ -28,6 +37,10 @@
   background: #fff;
   padding: 20rpx 0;
   margin-bottom: 20rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .tab-item {
@@ -106,6 +119,11 @@
 .tag-done {
   background: #E8F5E9;
   color: #4CAF50;
+}
+
+.tag-ignore {
+  background: #F5F5F5;
+  color: #999;
 }
 
 .feedback-content {

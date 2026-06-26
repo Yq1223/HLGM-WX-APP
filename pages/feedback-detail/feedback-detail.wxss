@@ -49,6 +49,11 @@
   color: #4CAF50;
 }
 
+.tag-ignore {
+  background: #F5F5F5;
+  color: #999;
+}
+
 .info-meta {
   font-size: 24rpx;
   color: #999;
@@ -155,6 +160,10 @@
 
 .status-dot.done {
   background: #4CAF50;
+}
+
+.status-dot.ignore {
+  background: #999;
 }
 
 .reply-input-wrap {

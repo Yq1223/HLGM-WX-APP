@@ -3,7 +3,7 @@
   <view class="info-card">
     <view class="info-header">
       <view class="info-title">{{feedback.title}}</view>
-      <view class="tag tag-{{feedback.status === 0 ? 'pending' : feedback.status === 1 ? 'progress' : 'done'}}">
+      <view class="tag tag-{{feedback.status === 0 ? 'pending' : feedback.status === 1 ? 'progress' : feedback.status === 2 ? 'done' : 'ignore'}}">
         {{feedback.statusDesc}}
       </view>
     </view>
@@ -22,8 +22,8 @@
     <view class="reply-content">{{feedback.reply}}</view>
   </view>
 
-  <!-- 管理员操作区：仅从反馈管理进入且待处理状态可操作 -->
-  <view class="admin-section" wx:if="{{fromAdmin && isAdmin && feedback.status === 0}}">
+  <!-- 管理员操作区：从反馈管理进入即可操作 -->
+  <view class="admin-section" wx:if="{{fromAdmin && isAdmin}}">
     <view class="section-title">处理反馈</view>
     
     <view class="status-options">
@@ -41,6 +41,11 @@
             bindtap="selectStatus" data-status="2">
         <text class="status-dot done"></text>
         <text>已完成</text>
+      </view>
+      <view class="status-option {{selectedStatus === 3 ? 'active' : ''}}" 
+            bindtap="selectStatus" data-status="3">
+        <text class="status-dot ignore"></text>
+        <text>不处理</text>
       </view>
     </view>
 
