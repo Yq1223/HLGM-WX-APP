@@ -13,7 +13,7 @@
 
     <!-- 应用名 -->
     <view class="app-name animate-fade-in-delay1">
-      <text class="name-cn">薅了个毛</text>
+      <text class="name-cn">薅个毛吧</text>
       <text class="name-en">Haloy Wool</text>
     </view>
 

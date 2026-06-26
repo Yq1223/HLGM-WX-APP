@@ -52,21 +52,24 @@ function request(options) {
             reject(body);
           }
         } else if (res.statusCode === 401) {
-          // token过期或未登录
+          const hasToken = !!app.getToken();
           app.clearLoginInfo();
-          // 防止重复弹窗
-          if (!app.globalData.isShowingAuthError) {
-            app.globalData.isShowingAuthError = true;
-            wx.showModal({
-              title: '提示',
-              content: '登录已过期，请重新登录',
-              showCancel: false,
-              success() {
-                app.globalData.isShowingAuthError = false;
-                wx.switchTab({ url: '/pages/mine/mine' });
-              }
-            });
+          if (hasToken) {
+            // 有 token 但过期了，提示用户重新登录
+            if (!app.globalData.isShowingAuthError) {
+              app.globalData.isShowingAuthError = true;
+              wx.showModal({
+                title: '提示',
+                content: '登录已过期，请重新登录',
+                showCancel: false,
+                success() {
+                  app.globalData.isShowingAuthError = false;
+                  wx.switchTab({ url: '/pages/mine/mine' });
+                }
+              });
+            }
           }
+          // 没有 token 的情况不弹窗，由调用方自行处理（如 detail.js 的 ensureLogin）
           reject({ code: 401, msg: '未登录' });
         } else {
           wx.showToast({ title: '服务器错误', icon: 'none' });

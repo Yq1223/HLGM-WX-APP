@@ -191,7 +191,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.info ? this.data.info.title : '薅了个毛',
+      title: this.data.info ? this.data.info.title : '薅个毛吧',
       path: '/pages/detail/detail?id=' + this.data.id
     };
   }

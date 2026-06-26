@@ -6,7 +6,7 @@
         <view class="brand-info">
           <image class="brand-logo" src="/images/logo-200.png" mode="aspectFill" />
           <view class="brand-text">
-            <text class="brand-name">薅了个毛</text>
+            <text class="brand-name">薅个毛吧</text>
             <text class="brand-slogan">本来不想薅的，但它实在太便宜了</text>
           </view>
         </view>

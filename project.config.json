@@ -1,5 +1,5 @@
 {
-  "description": "薅了个毛 - 薅羊毛信息社区",
+  "description": "薅个毛吧 - 薅羊毛信息社区",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -46,6 +46,6 @@
   "compileType": "miniprogram",
   "libVersion": "3.3.4",
   "appid": "wx74d1dae41082b9d5",
-  "projectname": "薅了个毛",  
+  "projectname": "薅个毛吧",  
   "condition": {}
 }
