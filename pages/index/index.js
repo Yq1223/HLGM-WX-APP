@@ -12,7 +12,6 @@ Page({
     pageSize: 10,
     loading: false,
     noMore: false,
-    lastRefreshTime: 0
   },
 
   onLoad() {
@@ -20,15 +19,9 @@ Page({
   },
 
   onShow() {
-    // 发布/编辑完成后跳转回来，自动刷新列表
+    // 仅在发布/编辑完成后才自动刷新列表
     if (app.globalData.needRefreshList) {
       app.globalData.needRefreshList = false;
-      this.loadList(true);
-      return;
-    }
-    // 每次页面显示时，如果距离上次刷新超过3秒，自动刷新
-    const now = Date.now();
-    if (now - this.data.lastRefreshTime > 3000) {
       this.loadList(true);
     }
   },
@@ -70,8 +63,7 @@ Page({
         list: refresh ? records : this.data.list.concat(records),
         pageNum: pageNum + 1,
         noMore: records.length < this.data.pageSize,
-        loading: false,
-        lastRefreshTime: Date.now()
+        loading: false
       });
     }).catch(() => {
       this.setData({ loading: false });
