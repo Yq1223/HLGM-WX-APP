@@ -39,7 +39,7 @@
       </view>
       <view class="info-source" wx:if="{{info.sourceUrl}}">
         <text class="source-label">来源：</text>
-        <text class="source-link" bindtap="copySource">{{info.sourceUrl}}</text>
+        <text class="source-link" bindtap="openSource">{{info.sourceUrl}}</text>
       </view>
     </view>
 

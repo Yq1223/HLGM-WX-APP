@@ -46,12 +46,23 @@ Page({
     });
   },
 
-  // 复制来源链接
-  copySource() {
-    wx.setClipboardData({
-      data: this.data.info.sourceUrl,
-      success() {
-        wx.showToast({ title: '链接已复制', icon: 'success' });
+  // 复制来源链接并引导用户在浏览器中打开
+  openSource() {
+    const url = this.data.info.sourceUrl;
+    if (!url) return;
+    wx.showModal({
+      title: '打开链接',
+      content: '即将复制链接到剪贴板，请打开浏览器粘贴访问',
+      confirmText: '复制链接',
+      success(res) {
+        if (res.confirm) {
+          wx.setClipboardData({
+            data: url,
+            success() {
+              wx.showToast({ title: '链接已复制，请打开浏览器', icon: 'none', duration: 2000 });
+            }
+          });
+        }
       }
     });
   },
