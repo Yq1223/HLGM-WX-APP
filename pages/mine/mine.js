@@ -18,6 +18,7 @@ Page({
     tempAvatarUrl: '',
     tempNickname: '',
     isCachedUser: false,  // 是否有历史用户信息
+    registering: false,   // 防重复注册
     // 订阅状态
     subscribed: false
   },
@@ -66,8 +67,7 @@ Page({
           showLoginDialog: true,
           tempAvatarUrl: '',
           tempNickname: '',
-          isCachedUser: false,
-          pendingCode: result.code  // 保存 code 用于后续注册
+          isCachedUser: false
         });
       } else {
         // 已有用户，显示信息（禁用状态）
@@ -99,7 +99,10 @@ Page({
   },
 
   confirmLogin() {
-    const { isCachedUser, tempNickname, tempAvatarUrl, pendingCode } = this.data;
+    const { isCachedUser, tempNickname, tempAvatarUrl, registering } = this.data;
+
+    // 防重复点击
+    if (registering) return;
 
     if (isCachedUser) {
       // 已有用户，登录已完成，直接关闭弹窗
@@ -111,24 +114,58 @@ Page({
       this.loadMyList(true);
       wx.showToast({ title: '登录成功', icon: 'success' });
     } else {
-      // 新用户，调用注册接口
-      const nickname = tempNickname || '微信用户';
+      // 新用户，校验昵称
+      const nickname = (tempNickname || '').trim();
+      if (!nickname) {
+        wx.showToast({ title: '请输入昵称', icon: 'none' });
+        return;
+      }
       const avatarUrl = tempAvatarUrl || '';
 
+      this.setData({ registering: true });
       wx.showLoading({ title: '注册中...', mask: true });
 
-      app.wxRegister(pendingCode, nickname, avatarUrl).then(data => {
-        wx.hideLoading();
-        this.setData({
-          showLoginDialog: false,
-          userInfo: app.globalData.userInfo,
-          isAdmin: data.role === 1
-        });
-        this.loadMyList(true);
-        wx.showToast({ title: '注册成功', icon: 'success' });
-      }).catch(err => {
-        wx.hideLoading();
-        wx.showToast({ title: err || '注册失败', icon: 'none' });
+      // 重新获取 fresh code，避免旧 code 过期
+      wx.login({
+        success: (loginRes) => {
+          if (!loginRes.code) {
+            wx.hideLoading();
+            this.setData({ registering: false });
+            wx.showToast({ title: '获取登录凭证失败', icon: 'none' });
+            return;
+          }
+
+          app.wxRegister(loginRes.code, nickname, avatarUrl).then(data => {
+            wx.hideLoading();
+            this.setData({
+              showLoginDialog: false,
+              registering: false,
+              userInfo: app.globalData.userInfo,
+              isAdmin: data.role === 1
+            });
+            this.loadMyList(true);
+            wx.showToast({ title: '注册成功', icon: 'success' });
+          }).catch(err => {
+            wx.hideLoading();
+            this.setData({ registering: false });
+            wx.showModal({
+              title: '注册失败',
+              content: typeof err === 'string' ? err : '注册失败，请重试',
+              showCancel: true,
+              confirmText: '重试',
+              success: (modalRes) => {
+                if (modalRes.confirm) {
+                  this.confirmLogin();
+                }
+              }
+            });
+          });
+        },
+        fail: () => {
+          wx.hideLoading();
+          this.setData({ registering: false });
+          wx.showToast({ title: '微信登录失败', icon: 'none' });
+        }
       });
     }
   },
