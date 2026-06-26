@@ -57,21 +57,19 @@ Page({
   },
 
   // 编辑
-    // 编辑
-    onEdit() {
-      const info = this.data.info;
-      // 通过 globalData 传递编辑数据（避免 URL 过长）
-      app.globalData.editData = {
-        id: info.id,
-        title: info.title,
-        content: info.content,
-        category: info.category || '',
-        sourceUrl: info.sourceUrl || '',
-        claimSteps: info.claimSteps || ''
-      };
-      // publish 是 tabBar 页面，必须用 switchTab
-      wx.switchTab({ url: '/pages/publish/publish' });
-    },
+  onEdit() {
+    const info = this.data.info;
+    // 通过 globalData 传递编辑数据（避免 URL 过长）
+    app.globalData.editData = {
+      id: info.id,
+      title: info.title,
+      content: info.content,
+      category: info.category || '',
+      sourceUrl: info.sourceUrl || '',
+      claimSteps: info.claimSteps || ''
+    };
+    wx.navigateTo({ url: '/pages/edit/edit' });
+  },
 
   // 删除
   onDelete() {

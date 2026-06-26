@@ -1,0 +1,62 @@
+<view class="page-edit">
+  <view class="form-card">
+    <!-- 标题 -->
+    <view class="form-item">
+      <view class="form-label">标题 <text class="required">*</text></view>
+      <input class="form-input"
+             placeholder="请输入标题，最多128字"
+             maxlength="128"
+             value="{{form.title}}"
+             bindinput="onInput" data-field="title" />
+      <view class="char-count">{{form.title.length}}/128</view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="form-item">
+      <view class="form-label">分类</view>
+      <view class="category-wrap">
+        <view class="category-item {{form.category === item ? 'active' : ''}}"
+              wx:for="{{categories}}" wx:key="*this"
+              bindtap="onCategory" data-val="{{item}}">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 内容 -->
+    <view class="form-item">
+      <view class="form-label">内容 <text class="required">*</text></view>
+      <textarea class="form-textarea"
+                placeholder="请详细描述薅羊毛活动信息..."
+                maxlength="5000"
+                value="{{form.content}}"
+                bindinput="onInput" data-field="content" />
+    </view>
+
+    <!-- 领取步骤 -->
+    <view class="form-item">
+      <view class="form-label">领取步骤</view>
+      <textarea class="form-textarea"
+                placeholder="填写领取/参与步骤，每行一步"
+                maxlength="1000"
+                value="{{form.claimSteps}}"
+                bindinput="onInput" data-field="claimSteps" />
+    </view>
+
+    <!-- 来源链接 -->
+    <view class="form-item">
+      <view class="form-label">来源链接</view>
+      <input class="form-input"
+             placeholder="填写活动来源URL（选填）"
+             value="{{form.sourceUrl}}"
+             bindinput="onInput" data-field="sourceUrl" />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-wrap safe-bottom">
+    <button class="btn-primary submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '重新提交审核'}}
+    </button>
+  </view>
+</view>

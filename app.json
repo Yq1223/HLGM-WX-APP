@@ -4,6 +4,7 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/publish/publish",
+    "pages/edit/edit",
     "pages/mine/mine",
     "pages/admin/admin",
     "pages/exchange/exchange",

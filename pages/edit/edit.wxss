@@ -1,0 +1,92 @@
+.page-edit {
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* ========== 表单 ========== */
+.form-card {
+  background: #FFF;
+  margin: 20rpx 24rpx;
+  border-radius: 12rpx;
+  padding: 24rpx 32rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+  position: relative;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.required {
+  color: #FF4D4F;
+}
+
+.form-input {
+  border: 2rpx solid #F0F0F0;
+  border-radius: 6rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  height: 80rpx;
+}
+
+.form-textarea {
+  border: 2rpx solid #F0F0F0;
+  border-radius: 6rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  width: 100%;
+  height: 240rpx;
+  box-sizing: border-box;
+}
+
+.char-count {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+  font-size: 22rpx;
+  color: #CCCCCC;
+}
+
+/* 分类选择 */
+.category-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.category-item {
+  padding: 10rpx 28rpx;
+  border-radius: 6rpx;
+  font-size: 26rpx;
+  background: #F5F5F5;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.category-item.active {
+  background: #FFF4EC;
+  color: #FF6B35;
+  border-color: #FF6B35;
+}
+
+/* ========== 提交按钮 ========== */
+.submit-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 32rpx;
+  background: #FFF;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.04);
+  z-index: 100;
+}
+
+.submit-btn {
+  margin: 0;
+}
