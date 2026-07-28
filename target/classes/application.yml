@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wool_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456789
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 微信小程序配置
+wechat:
+  appid: wx74d1dae41082b9d5
+  secret: 5e7c93f81db16c9ee86a4c7233aa1f3b
+
+# JWT配置
+jwt:
+  secret: 9238eb16-e79a-4c7e-b80b-273d89175724
+  expiration: 604800000  # 7天(毫秒)
+
+logging:
+  level:
+    com.wool: debug
+    com.wool.platform: debug
+
+# ===== 拼多多（多多进宝）配置 =====
+pdd:
+  client-id: ${PDD_CLIENT_ID:a82470ea7e004dd381dffd7a30715e60}
+  client-secret: ${PDD_CLIENT_SECRET:53aed75d980846c119d26411c5f1a6e2dab9a1a2}
+  access-token: ${PDD_ACCESS_TOKEN:}
+  pid: ${PDD_PID:}
+  page-size: 50
+  max-page: 5
+  min-commission-rate: 1.0
+  min-coupon-amount: 0.0
+  # 定时拉取cron表达式（默认每30分钟）
+  fetch-cron: "0 0/30 * * * ?"
+
+# ===== 京东联盟配置 =====
+jd:
+  app-key: ${JD_APP_KEY:4f07010e18df0569628cac4a7ff9c88c}
+  secret-key: ${JD_SECRET_KEY:e55d5effe1594e779499c7f4866d2dfe}
+  union-id: ${JD_UNION_ID:}
+  site-id: ${JD_SITE_ID:}
+  page-size: 50
+  max-page: 5
+  min-commission-rate: 1.0
+  min-coupon-amount: 0.0
+  # 定时拉取cron表达式（默认每30分钟，与PDD错峰15分钟）
+  fetch-cron: "0 15/30 * * * ?"
