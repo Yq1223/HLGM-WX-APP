@@ -18,6 +18,9 @@
 
     <!-- 内容区域 -->
     <view class="content-card">
+      <!-- 上新标签 -->
+      <view class="detail-new-tag" wx:if="{{info.isNew}}">上新</view>
+
       <view class="info-title">{{info.title}}</view>
       <view class="info-meta">
         <text class="meta-author">{{info.authorName || '匿名'}}</text>
@@ -30,16 +33,65 @@
         <text class="tag tag-online">{{info.category}}</text>
       </view>
       <view class="divider"></view>
-      <view class="info-content">
-        <rich-text nodes="{{info.content}}"></rich-text>
-      </view>
-      <view class="info-steps" wx:if="{{info.claimSteps}}">
+
+      <!-- 商品类内容 -->
+      <block wx:if="{{info.product.isProduct}}">
+        <!-- 商品图片（可点击大图） -->
+        <view class="detail-image-wrap" wx:if="{{info.product.imageUrl}}" bindtap="previewImage">
+          <image class="detail-image" src="{{info.product.imageUrl}}" mode="widthFix" />
+          <view class="image-tap-hint">点击查看大图</view>
+        </view>
+
+        <!-- 价格对比 -->
+        <view class="price-compare">
+          <view class="price-row">
+            <view class="price-block price-now">
+              <text class="price-label">到手价</text>
+              <text class="price-value">¥{{info.product.finalPrice}}</text>
+            </view>
+            <view class="price-arrow">
+              <text class="arrow-icon">→</text>
+            </view>
+            <view class="price-block price-orig">
+              <text class="price-label">原价</text>
+              <text class="price-value">¥{{info.product.originalPrice}}</text>
+            </view>
+            <view class="price-save" wx:if="{{info.product.discount > 0}}">
+              <text class="save-text">省{{info.product.discount}}%</text>
+            </view>
+          </view>
+          <view class="coupon-row" wx:if="{{info.product.couponAmount > 0}}">
+            <view class="coupon-badge">优惠券</view>
+            <text class="coupon-amount">¥{{info.product.couponAmount}}</text>
+          </view>
+        </view>
+
+        <!-- 商品额外信息 -->
+        <view class="product-extra">
+          <text class="extra-item" wx:if="{{info.product.salesTip}}">📊 {{info.product.salesTip}}</text>
+          <text class="extra-item" wx:if="{{info.product.remainQuantity > 0}}">📦 剩余 {{info.product.remainQuantity}} 件</text>
+          <text class="extra-item" wx:if="{{info.product.shopName}}">🏪 {{info.product.shopName}}</text>
+          <text class="extra-item" wx:if="{{info.product.brandName}}">🏷️ {{info.product.brandName}}</text>
+        </view>
+      </block>
+
+      <!-- 非商品类内容 -->
+      <block wx:else>
+        <view class="info-content">
+          <rich-text nodes="{{info.textContent}}"></rich-text>
+        </view>
+      </block>
+
+      <!-- 领取步骤 -->
+      <view class="info-steps" wx:if="{{info.displayClaimSteps}}">
         <view class="steps-title">📋 领取步骤</view>
-        <view class="steps-content">{{info.claimSteps}}</view>
+        <view class="steps-content">{{info.displayClaimSteps}}</view>
       </view>
-      <view class="info-source" wx:if="{{info.sourceUrl}}">
-        <text class="source-label">来源：</text>
-        <text class="source-link" bindtap="openSource">{{info.sourceUrl}}</text>
+
+      <!-- 复制链接去购买 -->
+      <view class="buy-action" wx:if="{{info.sourceUrl}}">
+        <button class="btn-copy-buy" bindtap="openSource">📋 复制链接去购买</button>
+        <text class="buy-hint">复制链接后打开浏览器或对应App粘贴访问</text>
       </view>
     </view>
 

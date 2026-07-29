@@ -47,19 +47,43 @@
   <!-- 羊毛列表 -->
   <view class="wool-list" wx:if="{{list.length > 0}}">
     <view class="wool-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <!-- 上新角标 -->
+      <view class="new-badge" wx:if="{{item.isNew}}">上新</view>
+
       <view class="card-body">
-        <view class="card-content">
-          <view class="card-title">{{item.title}}</view>
-          <view class="card-summary">{{item.content}}</view>
-          <view class="card-meta">
-            <view class="meta-left">
-              <text class="meta-author">{{item.authorName || '匿名'}}</text>
-              <text class="meta-dot">·</text>
-              <text class="meta-time">{{item.createdAt}}</text>
+        <!-- 商品类内容 -->
+        <block wx:if="{{item.product.isProduct}}">
+          <view class="card-product">
+            <image class="card-thumb" src="{{item.product.thumbUrl || item.product.imageUrl}}" mode="aspectFill" wx:if="{{item.product.imageUrl}}" />
+            <view class="card-info">
+              <view class="card-title">{{item.displayTitle}}</view>
+              <view class="card-tags">
+                <view class="discount-tag" wx:if="{{item.product.discount > 0}}">省{{item.product.discount}}%</view>
+                <view class="coupon-mini-tag" wx:if="{{item.product.couponAmount > 0}}">券¥{{item.product.couponAmount}}</view>
+              </view>
+              <view class="card-extra">
+                <text class="extra-sales" wx:if="{{item.product.salesTip}}">{{item.product.salesTip}}</text>
+              </view>
             </view>
-            <view class="meta-right">
-              <text class="meta-views">👁 {{item.viewCount || 0}}</text>
-            </view>
+          </view>
+        </block>
+
+        <!-- 非商品类内容（手动发布） -->
+        <block wx:else>
+          <view class="card-content">
+            <view class="card-title">{{item.displayTitle}}</view>
+            <view class="card-summary">{{item.product.text}}</view>
+          </view>
+        </block>
+
+        <view class="card-meta">
+          <view class="meta-left">
+            <text class="meta-author">{{item.authorName || '匿名'}}</text>
+            <text class="meta-dot">·</text>
+            <text class="meta-time">{{item.createdAt}}</text>
+          </view>
+          <view class="meta-right">
+            <text class="meta-views">👁 {{item.viewCount || 0}}</text>
           </view>
         </view>
       </view>

@@ -1,6 +1,6 @@
 const { request } = require('../../utils/request');
 const { ensureLogin, isAdmin, isOwner } = require('../../utils/auth');
-const { formatDateTime } = require('../../utils/util');
+const { formatDateTime, parseContent, isNew } = require('../../utils/util');
 const app = getApp();
 
 Page({
@@ -24,26 +24,48 @@ Page({
     }).then(res => {
       const info = res.data;
       info.createdAt = formatDateTime(info.createdAt);
+      const product = parseContent(info.content);
+      info.product = product;
+      info.isNew = isNew(info.createdAt);
+      // 如果是纯文本内容，保留原始 HTML 用于 rich-text 渲染
+      if (!product.isProduct) {
+        info.textContent = info.content;
+      }
+      const admin = isAdmin();
       const userInfo = app.globalData.userInfo || {};
+
+      // 非管理员隐藏佣金相关信息
+      if (!admin && info.claimSteps) {
+        info.displayClaimSteps = info.claimSteps
+          .split('\n')
+          .filter(line => line.indexOf('佣金') === -1)
+          .join('\n')
+          .trim();
+      } else {
+        info.displayClaimSteps = info.claimSteps || '';
+      }
+
       this.setData({
         info: info,
         loading: false,
         isOwner: isOwner(info.userId),
-        isAdmin: isAdmin()
+        isAdmin: admin
       });
     }).catch(err => {
-      if (err.code === 401) {
-        // 未登录，引导登录
-        ensureLogin().then(() => {
-          this.loadDetail();
-        }).catch(() => {
-          wx.navigateBack();
-        });
-      } else {
-        this.setData({ loading: false });
-        wx.showToast({ title: err.msg || '加载失败', icon: 'none' });
-      }
+      this.setData({ loading: false });
+      wx.showToast({ title: err.msg || '加载失败', icon: 'none' });
     });
+  },
+
+  // 点击图片查看大图
+  previewImage() {
+    const info = this.data.info;
+    if (info && info.product && info.product.imageUrl) {
+      wx.previewImage({
+        current: info.product.imageUrl,
+        urls: [info.product.imageUrl]
+      });
+    }
   },
 
   // 复制来源链接并引导用户在浏览器中打开

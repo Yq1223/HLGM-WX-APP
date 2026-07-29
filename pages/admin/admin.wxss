@@ -18,6 +18,24 @@
   border-radius: 24rpx;
 }
 
+.migrate-btn {
+  margin-left: 16rpx;
+  color: #1890FF;
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.migrated {
+  margin-left: 16rpx;
+  color: #52C41A;
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.points-awarded {
+  font-size: 22rpx;
+  color: #52C41A;
+  margin-right: 12rpx;
+}
+
 /* 筛选栏 */
 .filter-bar {
   display: flex;

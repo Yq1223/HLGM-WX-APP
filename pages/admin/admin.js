@@ -5,12 +5,14 @@ const app = getApp();
 Page({
   data: {
     filterStatus: null,
+    filterPointsPending: false,
     list: [],
     pageNum: 1,
     pageSize: 20,
     loading: false,
     noMore: false,
-    subscribed: false
+    subscribed: false,
+    migrated: false
   },
 
   onLoad(options) {
@@ -107,7 +109,10 @@ Page({
     this.setData({ loading: true });
 
     const params = { pageNum, pageSize: this.data.pageSize };
-    if (this.data.filterStatus !== null && this.data.filterStatus !== '' && this.data.filterStatus !== undefined) {
+    if (this.data.filterPointsPending) {
+      params.status = 1;
+      params.pointsPending = true;
+    } else if (this.data.filterStatus !== null && this.data.filterStatus !== '' && this.data.filterStatus !== undefined) {
       params.status = this.data.filterStatus;
     }
 
@@ -140,7 +145,13 @@ Page({
   setFilter(e) {
     const status = e.currentTarget.dataset.status;
     const newStatus = (status !== 0 && !status) ? null : status;
-    this.setData({ filterStatus: newStatus, noMore: false });
+    this.setData({ filterStatus: newStatus, filterPointsPending: false, noMore: false });
+    this.loadList(true);
+  },
+
+  // 筛选待积分审批
+  setFilterPointsPending() {
+    this.setData({ filterPointsPending: true, filterStatus: null, noMore: false });
     this.loadList(true);
   },
 
@@ -186,6 +197,33 @@ Page({
       wx.showToast({ title: online ? '已上线' : '已下线', icon: 'success' });
       this.loadList(true);
     }).catch(() => {});
+  },
+
+  // 迁移旧分类
+  onMigrateCategories() {
+    wx.showModal({
+      title: '迁移旧分类',
+      content: '将旧的 pdd/jd 分类自动迁移为智能分类（会员/话费/外卖/电商等），是否执行？',
+      confirmText: '开始迁移',
+      confirmColor: '#FF6B35',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '迁移中...', mask: true });
+          request({
+            url: '/api/admin/wool/migrate-categories',
+            method: 'POST'
+          }).then(res => {
+            wx.hideLoading();
+            this.setData({ migrated: true });
+            wx.showToast({ title: res.data.message || '迁移完成', icon: 'success', duration: 2000 });
+            this.loadList(true);
+          }).catch(err => {
+            wx.hideLoading();
+            wx.showToast({ title: err.msg || '迁移失败', icon: 'none' });
+          });
+        }
+      }
+    });
   },
 
   // 删除

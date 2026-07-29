@@ -1,5 +1,5 @@
 const { request } = require('../../utils/request');
-const { formatTime, getSummary } = require('../../utils/util');
+const { formatTime, parseContent, simplifyTitle, isNew } = require('../../utils/util');
 const app = getApp();
 
 Page({
@@ -53,11 +53,16 @@ Page({
         category: this.data.category || ''
       }
     }).then(res => {
-      const records = (res.data.records || []).map(item => ({
-        ...item,
-        createdAt: formatTime(item.createdAt),
-        content: getSummary(item.content)
-      }));
+      const records = (res.data.records || []).map(item => {
+        const product = parseContent(item.content);
+        return {
+          ...item,
+          createdAt: formatTime(item.createdAt),
+          product: product,
+          displayTitle: product.isProduct ? simplifyTitle(item.title, product) : item.title,
+          isNew: isNew(item.createdAt)
+        };
+      });
 
       this.setData({
         list: refresh ? records : this.data.list.concat(records),
